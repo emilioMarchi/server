@@ -30,7 +30,8 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-    res.end(req.body)
+    console.dir(req.body)
+    res.send('test')
 })
 
 module.exports = router
