@@ -5,7 +5,6 @@ const fs = require('fs');
 const fsp = fs.promises;
 const db = []
 
-
 const getProducts = new Promise(async (res, err) => {
     
     const data = await fsp.readFile('./products.json', 'utf8')
@@ -30,7 +29,8 @@ router.get('/:id', (req, res) => {
     res.json(item)
 });
 
-router.post('/', (req, res) => {
-    res.send('value')
+router.post('/add', (req, res) => {
+    res.end(req.body)
 })
+
 module.exports = router
