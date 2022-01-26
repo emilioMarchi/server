@@ -2,14 +2,16 @@
   "name": "servidor-web",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon sever.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.1",
     "express": "^4.17.2",
+    "fs": "^0.0.1-security",
     "nodemon": "^2.0.15"
   }
 }

@@ -1,17 +1,20 @@
 [
-    {
-        "title": "producto1",
-        "price": "9999",
-        "id": 0
-    },
-    {
-        "title": "producto2",
-        "price": "9999",
-        "id": 1
-    },
-    {
-        "title": "producto3",
-        "price": "9999",
-        "id": 2
-    }
+  { 
+    "title": "product", 
+    "description": "product description",
+    "price": 999,
+    "id": "351687"
+  },
+  { 
+    "title": "product2", 
+    "description": "product2 description",
+    "price": 999,
+    "id": "321351"
+  },
+  { 
+    "title": "product3", 
+    "description": "product description",
+    "price": 999,
+    "id": "398654"
+  }
 ]
