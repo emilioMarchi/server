@@ -5,6 +5,7 @@ const fs = require('fs');
 const fsp = fs.promises;
 const db = []
 
+
 const getProducts = new Promise(async (res, err) => {
     
     const data = await fsp.readFile('./products.json', 'utf8')
