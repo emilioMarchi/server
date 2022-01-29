@@ -31,8 +31,14 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-    console.dir(req.body)
-    res.send('test')
+    const newProduct = req.body
+        
+    if(req.body.title && req.body.description && req.body.price && req.body.id) {
+        db.push(newProduct)     
+        res.send(db)
+    }else{
+        res.send('error')
+    }
 })
 
 module.exports = router
