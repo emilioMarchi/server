@@ -16,29 +16,59 @@ getProducts.then((res) => {
     res.map((item) => { db.push(item) })
 })
 
+    function hash() {
+        const current_date = (new Date()).valueOf().toString()
+        const random = Math.random().toString()
+        let hash
+        let checkID = 0
+
+        db.map((item) => {
+            if(item.id == random) {
+                checkID++
+            }else { }
+        })
+
+        if(checkID==0){
+            return ( 
+            {
+                'hash':`${current_date}_${random}`
+            } 
+            )
+        } else{console.dir('error hash')}
+
+    }
+
 
 
 router.get('/', (req, res) => {
-    res.send(db)
+    res.json(db)
 });
 
 router.get('/:id', (req, res) => {
-
+    
     const id = req.params.id;
     const item = db.filter(item => item.id == id)
-
+    
     res.json(item)
 });
 
 router.post('/add', (req, res) => {
-    const newProduct = req.body
-        
-    if(req.body.title && req.body.description && req.body.price && req.body.id) {
-        db.push(newProduct)     
-        res.send(db)
-    }else{
-        res.send('error')
+    
+    
+    const {title, description, price} = req.body
+    const newProduct = 
+    {
+        'id' : hash().hash,
+        'title' : `${title}`,
+        'description' : `${description}`,
+        'price' : `${price}` 
     }
+    
+    db.push(newProduct);
+
+    fsp.writeFile('./products.json', JSON.stringify(db), (err) => {
+        console.dir(err)
+    } )
 })
 
 module.exports = router
