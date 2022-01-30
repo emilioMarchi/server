@@ -49,7 +49,10 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     const id = req.params.id;
-    res.json(productMlw.getForId(id))
+    const item = productMlw.getForId(id)
+    if(item[0]){
+        res.json(productMlw.getForId(id))
+    } else{res.json({err:'The product does not exist'})}
 });
 
 router.post('/', (req, res) => {
