@@ -3,17 +3,19 @@ const app = express();
 
 //routes
 const productsRouter = require('./routes/productsRoute');
+const randomProductRouter = require('./routes/randomProductRoute')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-//set port
+//set port  
 app.set('port', process.env.PORT || 8080);
 
 app.use(express.static(__dirname + '/public'))
 
 //set router
 app.use('/api/products', productsRouter);
+app.use('/api/randomProducts', randomProductRouter);
 
 
 

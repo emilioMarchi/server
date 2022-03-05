@@ -41,10 +41,19 @@ class Products {
 }
 
 const productMlw = new Products()
-productMlw.getProducts()
 
-router.get('/', (req, res) => {
-    res.json(productMlw.db)
+router.get('/', async (req, res) => {
+    try{
+
+        await productMlw.getProducts()
+        const data = productMlw.db
+        res.json(data)
+    }
+    catch{
+        res.json({
+            error: 'error get data'
+        })
+    }
 });
 
 router.get('/:id', (req, res) => {
@@ -63,9 +72,9 @@ router.post('/', (req, res) => {
         const newItem = 
         {
             'id' : productMlw.getHash(),
-            'title' : `${title}`,
-            'description' : `${description}`,
-            'price' : `${price}` 
+            title,
+            description,
+            price 
         }
     
         productMlw.db.push(newItem);
@@ -111,7 +120,7 @@ router.put('/:id', (req, res) => {
     const id = req.params.id
     const { title, description, price } = req.body
     const newItem = {
-        id,
+        'id' : productMlw.getHash(),
         title,
         description,
         price
