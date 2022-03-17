@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
 
         await productMlw.getProducts()
         const data = productMlw.db
-        res.json(data)
+        res.render('layouts/home')
     }
     catch{
         res.json({
