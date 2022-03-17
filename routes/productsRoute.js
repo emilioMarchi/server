@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
 
         await productMlw.getProducts()
         const data = productMlw.db
-        res.render('layouts/home')
+        res.render('layouts/productsList')
     }
     catch{
         res.json({
@@ -63,6 +63,10 @@ router.get('/:id', (req, res) => {
         res.json(productMlw.getForId(id))
     } else{res.json({err:'The product does not exist'})}
 });
+
+router.get('/form', (req, res) => {
+    res.render('layouts/form')
+})
 
 router.post('/', (req, res) => {
     
