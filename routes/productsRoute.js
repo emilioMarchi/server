@@ -19,6 +19,7 @@ class Products {
         const dataParse = JSON.parse(data);
         
         dataParse.map(item => this.db.push(item))
+        return this.db
     }
     
     getHash() {
@@ -45,9 +46,10 @@ const productMlw = new Products()
 router.get('/', async (req, res) => {
     try{
 
-        await productMlw.getProducts()
-        const data = productMlw.db
-        res.render('layouts/productsList')
+        const products = await productMlw.getProducts()
+        const productsString = JSON.stringify(products)
+        res.render('layouts/productsList', {data: products})
+
     }
     catch{
         res.json({
@@ -56,19 +58,12 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', (req, res) => {
-    const id = req.params.id;
-    const item = productMlw.getForId(id)
-    if(item[0]){
-        res.json(productMlw.getForId(id))
-    } else{res.json({err:'The product does not exist'})}
-});
-
 router.get('/form', (req, res) => {
     res.render('layouts/form')
 })
 
-router.post('/', (req, res) => {
+
+router.post('/form', (req, res) => {
     
     const {title, description, price} = req.body
 
@@ -86,10 +81,26 @@ router.post('/', (req, res) => {
         fsp.writeFile('./products.json', JSON.stringify(productMlw.db), (err) => {
             console.dir(err)
         } )
-    
-        res.json(newProduct)
-    } else {res.json({err: 'error'})}
+        const data = {state: 'satisfactory', msj: 'New product added'}
+        res.render('layouts/form', {data})
+        console.log('todo ok')
+    } 
+    else {
+        const data = { state: 'negative', msj: 'The product could not be loaded. Try again'}
+        res.render('layouts/form', {data})
+            console.log('todo mal')
+        }
 })
+
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    const item = productMlw.getForId(id)
+    if(item[0]){
+        res.json(productMlw.getForId(id))
+    } else{res.json({err:'The product does not exist'})}
+});
+
+
 
 router.delete('/:id', (req, res)=>{
     

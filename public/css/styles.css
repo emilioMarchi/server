@@ -20,5 +20,42 @@ a {
 }
 
 .form {
-    background-color: blueviolet;
+    margin-top: 10rem;
+    margin-left: auto;
+    margin-right: auto;
 }
+.form-not {
+    
+    color: white;
+    font-size: 400;
+    text-align: center;
+    padding: 1rem 2rem;
+    
+}
+.satisfactory {
+    background-color: rgb(110, 185, 110);
+}
+.negative {
+    background-color: rgb(153, 45, 45);
+}
+
+.products-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.card {
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    width: 10rem; height: 15rem;
+    background-color: rgb(88, 88, 88);
+    margin: 2rem 1rem;
+}
+.card h2 {
+    font-size: 22px;
+    font-weight: 300;
+}
+
+

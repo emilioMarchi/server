@@ -1,1 +1,19 @@
-<h1>products list</h1>
+<div>
+    <a href="/api/products/form">Add product</a>
+</div>
+<div class="products-list">
+    {{#each data}}
+        <div class="card">
+            <h2>
+                {{this.title}}
+            </h2>
+            <h2>
+                {{this.description}}
+            </h2>
+            <h2>
+                $ {{this.price}}
+            </h2>
+        </div>
+    {{/each}}
+</div>
+
