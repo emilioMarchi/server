@@ -48,13 +48,19 @@ router.get('/', async (req, res) => {
 
         const products = await productMlw.getProducts()
         const productsString = JSON.stringify(products)
-        res.render('layouts/productsList', {data: products})
+
+        if(products.length === 0){
+            const data = {state: 'negative', msj: 'There are no products loaded'}
+            res.render('layouts/productsList', {data})
+        } else {
+            const data = {state: 'satisfactory', db:products}
+            res.render('layouts/productsList', {data})
+        }
 
     }
     catch{
-        res.json({
-            error: 'error get data'
-        })
+        const data = {state:negative}
+        res.render('layouts/productsList', {data})
     }
 });
 

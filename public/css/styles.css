@@ -58,4 +58,10 @@ a {
     font-weight: 300;
 }
 
-
+.product-list-not {
+    background-color: rgb(114, 93, 114);
+    color: white;
+}
+.product-list-not .satisfactory {
+    display: none;
+}

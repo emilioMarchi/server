@@ -2,7 +2,10 @@
     <a href="/api/products/form">Add product</a>
 </div>
 <div class="products-list">
-    {{#each data}}
+        <div class="product-list-not {{data.state}}">
+            <h2>{{data.msj}}</h2>
+        </div>
+    {{#each data.db}}
         <div class="card">
             <h2>
                 {{this.title}}
