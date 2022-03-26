@@ -2,6 +2,18 @@ const express = require('express');
 const exphbs  = require('express-handlebars');
 const app = express();
 const path = require('path')
+const http = require('http')
+const server = http.createServer(app)
+const {Server} = require('socket.io')
+
+const io = new Server(server)
+
+io.on('connection', (socket) => {
+    console.log('User connection')
+    socket.on('disconnect', () => {
+        console.log('User disconnect')
+    })
+})
 
 const productsRouter = require('./routes/productsRoute');
 const randomProductRouter = require('./routes/randomProductRoute')
