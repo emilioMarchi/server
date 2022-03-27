@@ -2,11 +2,8 @@ const express = require('express');
 const exphbs  = require('express-handlebars');
 const app = express();
 const path = require('path')
-const http = require('http')
-const server = http.createServer(app)
-const {Server} = require('socket.io')
-
-const io = new Server(server)
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
 
 io.on('connection', (socket) => {
     console.log('User connection')
