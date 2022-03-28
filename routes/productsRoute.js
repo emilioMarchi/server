@@ -14,14 +14,17 @@ class Products {
         return item
     }
     
-    async getProducts() {
+    async getData() {
         const data = await fsp.readFile('./products.json', 'utf8')
         const dataParse = JSON.parse(data);
         
         dataParse.map(item => this.db.push(item))
         return this.db
     }
-    
+    getProducts() {
+        const products = this.db
+        return products
+    }
     getHash() {
         const current_date = (new Date()).valueOf().toString()
         const random = Math.random().toString()
@@ -42,30 +45,30 @@ class Products {
 }
 
 const productMlw = new Products()
+productMlw.getData()
 
 router.get('/', async (req, res) => {
     try{
 
-        const products = await productMlw.getProducts()
-        const productsString = JSON.stringify(products)
-
+        const products =  productMlw.getProducts()
+        
         if(products.length === 0){
             const data = {state: 'negative', msj: 'There are no products loaded'}
-            res.render('layouts/productsList', {data})
+            res.render('productsList', {data})
         } else {
-            const data = {state: 'satisfactory', db:products}
-            res.render('layouts/productsList', {data})
+            const data = {state: 'satisfactory', db:productMlw.db}
+            res.render('productsList', {data})
         }
 
     }
     catch{
-        const data = {state:negative}
-        res.render('layouts/productsList', {data})
+        const data = {state:'negative'}
+        res.render('productsList', {data})
     }
 });
 
 router.get('/form', (req, res) => {
-    res.render('layouts/form')
+    res.render('form')
 })
 
 
@@ -88,13 +91,11 @@ router.post('/form', (req, res) => {
             console.dir(err)
         } )
         const data = {state: 'satisfactory', msj: 'New product added'}
-        res.render('layouts/form', {data})
-        console.log('todo ok')
+        res.render('form', {data})
     } 
     else {
         const data = { state: 'negative', msj: 'The product could not be loaded. Try again'}
-        res.render('layouts/form', {data})
-            console.log('todo mal')
+        res.render('form', {data})
         }
 })
 
