@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const dayjs = require('dayjs')
 
 const fs = require('fs');
 const productMlw = require('../mdlw/productModule');
@@ -10,13 +11,16 @@ const {io} = require('../server')
 
 io.on('connection', async (socket) => {
     socket.emit('server:loadProducts', productMlw.db)
-    console.log('user connected')
+    console.log('user connected', socket.id)
     
-
     socket.on('client:newProduct', async (data) => {
         try{
+            const hs = dayjs().format(`HH:mm:ss`)
+            const day = dayjs().format(`DD/MM/YYYY`)
+            const fecha = `${hs + ' hs ' +  day}`
             const product = {
                 id : productMlw.getHash(),
+                date: fecha,
                 ...data
             }
             await productMlw.addProduct(product)

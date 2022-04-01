@@ -7,6 +7,7 @@ const addListProducts = (data) => {
         const inner = (data) => {
             div.innerHTML = `
                 <div class='card-product' id='${data.id}'>
+                    <p>${data.date}</p>
                     <h2>${data.title}</h2>
                     <h3>${data.description}</h3>
                     <h3>${data.price}</h3>
