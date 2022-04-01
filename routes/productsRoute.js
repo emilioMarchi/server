@@ -2,50 +2,31 @@ const express = require('express')
 const router = express.Router()
 
 const fs = require('fs');
+const productMlw = require('../mdlw/productModule');
 const fsp = fs.promises;
 
-class Products {
-    constructor() {
-        this.db = []
-    }
-    
-    getForId(id) {
-        const item = this.db.filter(item => id == item.id)
-        return item
-    }
-    
-    async getData() {
-        const data = await fsp.readFile('./products.json', 'utf8')
-        const dataParse = JSON.parse(data);
-        
-        dataParse.map(item => this.db.push(item))
-        return this.db
-    }
-    getProducts() {
-        const products = this.db
-        return products
-    }
-    getHash() {
-        const current_date = (new Date()).valueOf().toString()
-        const random = Math.random().toString()
-        const hash = current_date+random
-        let checkID = 0
-        
-        this.db.map((item) => {
-            if(item.id == random) {
-                return checkID+=1
-            }else { }
-        })
-        
-        if(checkID==0){
-            return hash
-        } else{console.dir('error hash')}
-        
-    }
-}
+const {io} = require('../server')
 
-const productMlw = new Products()
-productMlw.getData()
+
+io.on('connection', async (socket) => {
+    socket.emit('server:loadProducts', productMlw.db)
+    console.log('user connected')
+    
+
+    socket.on('client:newProduct', async (data) => {
+        try{
+            const product = {
+                id : productMlw.getHash(),
+                ...data
+            }
+            await productMlw.addProduct(product)
+            io.emit('server:newProduct', product)
+        }
+        catch{
+            console.log('error addProduct')
+        }
+    })
+})
 
 router.get('/', async (req, res) => {
     try{
@@ -54,10 +35,10 @@ router.get('/', async (req, res) => {
         
         if(products.length === 0){
             const data = {state: 'negative', msj: 'There are no products loaded'}
-            res.render('productsList', {data})
+            res.render('index', {data})
         } else {
             const data = {state: 'satisfactory', db:productMlw.db}
-            res.render('productsList', {data})
+            res.render('index', {data})
         }
 
     }
