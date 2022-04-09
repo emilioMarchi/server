@@ -8,7 +8,7 @@ class Products {
     
     getForId(id) {
         const item = this.db.filter(item => id == item.id)
-        return item
+        return item[0]
     }
     
     async getData() {

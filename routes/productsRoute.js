@@ -32,32 +32,41 @@ io.on('connection', async (socket) => {
     })
 })
 
-router.get('/', async (req, res) => {
+router.get('/:id?', async (req, res) => {
     try{
 
         const products =  productMlw.getProducts()
+        const id = req.query.id
+        
         
         if(products.length === 0){
             const data = {state: 'negative', msj: 'There are no products loaded'}
-            res.render('index', {data})
+            res.send(data)
         } else {
             const data = {state: 'satisfactory', db:productMlw.db}
-            res.render('index', {data})
+            if(!id) {
+                res.send(data)
+            } else {
+                const product = productMlw.getForId(id)
+                if(!product){
+                    const data = {state: 'negative', msj:'product not found'}
+                    res.send(data)
+                } else {
+                    res.send(product)
+                    console.log('algo')
+                }
+            }
         }
 
     }
     catch{
         const data = {state:'negative'}
-        res.render('productsList', {data})
+        res.send(data)
     }
 });
 
-router.get('/form', (req, res) => {
-    res.render('form')
-})
 
-
-router.post('/form', (req, res) => {
+router.post('/', (req, res) => {
     
     const {title, description, price} = req.body
 
@@ -67,7 +76,8 @@ router.post('/form', (req, res) => {
             'id' : productMlw.getHash(),
             title,
             description,
-            price 
+            price,
+            date: new Date() 
         }
     
         productMlw.db.push(newItem);
@@ -76,31 +86,22 @@ router.post('/form', (req, res) => {
             console.dir(err)
         } )
         const data = {state: 'satisfactory', msj: 'New product added'}
-        res.render('form', {data})
+        res.send(data)
     } 
     else {
         const data = { state: 'negative', msj: 'The product could not be loaded. Try again'}
-        res.render('form', {data})
+        res.send(data)
         }
 })
 
-router.get('/:id', (req, res) => {
-    const id = req.params.id;
-    const item = productMlw.getForId(id)
-    if(item[0]){
-        res.json(productMlw.getForId(id))
-    } else{res.json({err:'The product does not exist'})}
-});
 
-
-
-router.delete('/:id', (req, res)=>{
+router.delete('/:id?', (req, res)=>{
     
-    const id = req.params.id
+    const id = req.query.id
     const item = productMlw.getForId(id)
 
     
-    if(item[0]){
+    if(item){
 
         const itemPosition = productMlw.db.map((item) => {
             if(id == item.id) {
@@ -122,21 +123,26 @@ router.delete('/:id', (req, res)=>{
     
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id?', (req, res) => {
 
-    const id = req.params.id
-    const { title, description, price } = req.body
+    const id = req.query.id
+    const { title, description, price, date } = req.body
+    
+    
     const newItem = {
-        'id' : productMlw.getHash(),
+        id,
         title,
         description,
-        price
+        price,
+        date,
+        modificationDate: new Date()
     }
-
-    const item = productMlw.getForId(id)
-
     
-    if(item[0]){
+    
+    const item = productMlw.getForId(id)
+    console.log(id)
+    
+    if(item){
 
         const itemPosition = productMlw.db.map((item) => {
             if(id == item.id) {
