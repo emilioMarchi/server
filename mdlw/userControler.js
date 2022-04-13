@@ -6,6 +6,12 @@ class UsersControler {
         this.db = []
     }
 
+    createCart = (user) => {user.cart.push({
+        hash: md5(`${this.email}${this.hash}`),
+        db: [],
+        creationDate: new Date()
+    })}
+
     async checkUsers(x) {
         const email = x
 

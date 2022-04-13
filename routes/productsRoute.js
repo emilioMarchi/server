@@ -36,7 +36,7 @@ io.on('connection', async (socket) => {
 router.get('/:id?', async (req, res) => {
     try{
         const email = req.query.email
-        console.log(email)
+
         const userChek = await usersControler.checkUsers(`${email}`)
         
         if(userChek === true){

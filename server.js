@@ -32,7 +32,9 @@ app.set('port', process.env.PORT || 8080);
 
 app.use('/products', productsRouter)
 
-
+app.get('/signIn', (req, res) => {
+    res.send({title:'Iniciar sesión', txtButton:'Ingresar'})
+})
 app.post('/signIn',  async (req, res) => {
 
     const data = req.body.email
@@ -48,6 +50,10 @@ app.post('/signIn',  async (req, res) => {
     else {
         res.send({state:'negative'})
     }
+})
+
+app.get('/logIn', (req, res) => {
+    res.send({title:'Crear usueario', txtButton:'Registrarse'})
 })
 app.post('/logIn', async (req, res) => {
 

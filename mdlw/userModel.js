@@ -9,6 +9,7 @@ class User {
         this.log = log,
         this.connectionDate = new Date(),
         this.cart = []
+        
     }
     getObjet() {
         const objet = {
@@ -17,16 +18,9 @@ class User {
             log : this.log,
             id : this.id,
             connectionDate : this.connectionDate,
-            cart : this.cart
+            cart : this.cart,
         }
         return objet
-    }
-    createCart() {
-        this.cart = {
-            hash: md5(`${this.email}${this.hash}`),
-            db: [],
-            creationDate: new Date()
-        }
     }
 }
 
