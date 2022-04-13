@@ -1,27 +1,56 @@
 const fsp = require('fs').promises
+const md5 = require('md5')
 
 class UsersControler {
-    constructor() {
+    constructor () {
         this.db = []
     }
 
-    async getData() {
+    async checkUsers(x) {
+        const email = x
+
+        const user = await this.getUser(email)
         
+         if(user == undefined){
+             return false
+         } else {return true}
+    }
+
+    async getUser(x) {
+        const email = x
+        
+        if(this.db.length !== 0) {
+            const user = this.db.find((item) => {
+                return item.email === email 
+            })
+            return user
+        }
+        else {
+            return undefined
+        }
+    }
+
+    async getData() {
+        await this.db.pop()
         const data = await fsp.readFile('./users.json', 'utf8')
         const dataParse = JSON.parse(data);
         
         dataParse.map(item => this.db.push(item))
+        return this.db
     }
 
     async addUser(data) {
-        this.db.push(data)
-        await fsp.writeFile('./users.json', JSON.stringify(this.db))
-        return this.db
+        try{
+            this.db.push(data)
+            await fsp.writeFile('./users.json', JSON.stringify(this.db))
+            return {state:'satisfactory', msj: 'user create' }
+        }
+        catch{
+            return {state:'negative'}
+        }
     }
 }
 
 const usersControler = new UsersControler()
 usersControler.getData()
-
-
 module.exports = usersControler
